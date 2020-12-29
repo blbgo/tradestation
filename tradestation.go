@@ -16,6 +16,8 @@ type Tradestation interface {
 	FinishAuth(code string) error
 
 	SymbolInfo(symbol string) (*SymbolInfoModel, error)
+
+	DailyStartingOn(symbol string, start time.Time) error
 	//MakeGetRequest(url string, form url.Values, result interface{}) error
 	//MakePostRequest(url string, form url.Values, body interface{}, result interface{}) error
 

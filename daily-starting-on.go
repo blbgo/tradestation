@@ -101,7 +101,7 @@ func (r *tradestation) DailyStartingOn(symbol string, start time.Time) error {
 	defer closeIfCloser(dumper)
 	go io.Copy(dumpWriter{Dumper: dumper}, resp.Body)
 
-	time.Sleep(time.Second * 20)
+	time.Sleep(time.Second * 10)
 
 	return nil
 }
