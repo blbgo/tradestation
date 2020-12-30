@@ -89,7 +89,10 @@ func (r *tradestation) DailyStartingOn(symbol string, start time.Time) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	go func() {
+		time.Sleep(time.Second * 10)
+		resp.Body.Close()
+	}()
 	if resp.StatusCode != http.StatusOK {
 		return ErrStatusNotOK
 	}
@@ -99,11 +102,10 @@ func (r *tradestation) DailyStartingOn(symbol string, start time.Time) error {
 		return err
 	}
 	defer closeIfCloser(dumper)
-	go io.Copy(dumpWriter{Dumper: dumper}, resp.Body)
 
-	time.Sleep(time.Second * 10)
+	_, err = io.Copy(dumpWriter{Dumper: dumper}, resp.Body)
 
-	return nil
+	return err
 }
 
 type dumpWriter struct {
